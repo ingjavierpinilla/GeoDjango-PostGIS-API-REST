@@ -1,3 +1,26 @@
+from django.utils import timezone
 from django.db import models
+from django.contrib.postgres.operations import CreateExtension
+from django.db import migrations
+from django.contrib.gis.db import models as gis_models
+class Migration(migrations.Migration):
 
-# Create your models here.
+    operations = [
+        CreateExtension('postgis'),
+    ]
+
+class Dataset(models.Model):
+    name = models.CharField(max_length = 95, blank = False)
+    date = models.DateTimeField(default = timezone.now, blank = False)
+
+    def __str__(self):
+        return f'{self.name} {self.date}'
+
+class Row(models.Model):
+    dataset_id = models.ForeignKey(Dataset, on_delete = models.CASCADE)
+    point = gis_models.PointField(blank = False)
+    client_id = models.PositiveIntegerField(blank = False)
+    client_name = models.CharField(max_length = 45, blank = False)
+
+    def __str__(self):
+        return f'{self.dataset_id} de {self.id}'
