@@ -16,7 +16,7 @@ class Dataset(models.Model):
     date = models.DateTimeField(default = timezone.now, blank = False)
 
     def __str__(self):
-        return f'{self.name} {self.date}'
+        return f'{self.id} {self.name}'
 
 class Row(models.Model):
     dataset_id = models.ForeignKey(Dataset, related_name='rows', on_delete = models.CASCADE)
@@ -25,4 +25,4 @@ class Row(models.Model):
     client_name = models.CharField(max_length = 45, blank = False)
 
     def __str__(self):
-        return f'{self.id} {self.point}'
+        return f'{self.dataset_id} {self.point}'
