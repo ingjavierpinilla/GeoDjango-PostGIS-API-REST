@@ -14,4 +14,4 @@ services:
   db:
     image: postgres #kartoza/postgis:12.1
     environment: 
-      - POSTGRES_PASSWORD=test
+      - POSTGRES_PASSWORD='$POSTGRES_PASSWORD'
