@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
 class Dataset(models.Model):
     name = models.CharField(max_length = 95, blank = False)
-    date = models.DateTimeField(default = datetime.now(timezone.utc).strftime("%Y%m%d"), blank = False)
+    date = models.DateTimeField(default = datetime.now(timezone.utc), blank = False)
 
     def __str__(self):
         return f'{self.id} {self.name}'

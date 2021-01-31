@@ -4,7 +4,7 @@ from .models import Dataset, Row
 class DatasetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dataset
-        fields = ('id','name',)
+        fields = ('id','name', 'date')
 
 class RowSerializer(serializers.ModelSerializer):
     class Meta:
