@@ -1,4 +1,4 @@
-from django.utils import timezone
+from datetime import datetime, timezone
 from django.db import models
 from django.contrib.postgres.operations import CreateExtension
 from django.db import migrations
@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
 class Dataset(models.Model):
     name = models.CharField(max_length = 95, blank = False)
-    date = models.DateTimeField(default = timezone.now, blank = False)
+    date = models.DateTimeField(default = datetime.now(timezone.utc).strftime("%Y%m%d"), blank = False)
 
     def __str__(self):
         return f'{self.id} {self.name}'
