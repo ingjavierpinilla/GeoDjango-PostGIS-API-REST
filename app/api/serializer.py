@@ -9,4 +9,5 @@ class DatasetSerializer(serializers.ModelSerializer):
 class RowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Row
+        ordering = ['-id']
         fields = ('id','dataset_id','point','client_id', 'client_name')

@@ -20,7 +20,7 @@ class Dataset(models.Model):
 
 class Row(models.Model):
     dataset_id = models.ForeignKey(Dataset, related_name='rows', on_delete = models.CASCADE)
-    point = gis_models.PointField(blank = False)
+    point = gis_models.PointField(srid = 4326, blank = False)
     client_id = models.PositiveIntegerField(blank = False)
     client_name = models.CharField(max_length = 45, blank = False)
 

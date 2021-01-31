@@ -7,7 +7,37 @@ from rest_framework.settings import api_settings
 from rest_framework.pagination import PageNumberPagination
 
 from .serializer import DatasetSerializer, RowSerializer
-from .models import Dataset
+from .models import Dataset, Row
+
+class RowListView(APIView):
+
+
+    def get(self, request, format=None):
+        dataset_id = request.GET.get('dataset_id', None)
+        name = request.GET.get('name', None)
+        point = request.GET.get('point', None)
+
+        if point is not None:
+            point = point[1:-1].split(" ")
+            if len(point) == 2:
+                point = Point(float(point[0]), float(point[1]))
+            else:
+                return Response('Punto no valido.', status = status.HTTP_400_BAD_REQUEST)
+
+        if dataset_id is None:
+            return Response('Argumento dataset_id no encontrado.', status = status.HTTP_400_BAD_REQUEST)
+
+        values = { 'dataset_id' : dataset_id, 'client_name' : name, 'point' : point}
+        arguments = {}
+        for k, v in values.items():
+            if v:
+                arguments[k] = v
+                
+        queryset = Row.objects.filter(**arguments)
+        serializer = RowSerializer(queryset, many=True)
+        return Response(serializer.data)
+ 
+
 
 class Upload_csv(generics.ListCreateAPIView):
 
@@ -23,9 +53,9 @@ class Upload_csv(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         try:
 
-            if (name := request.data.get('name')) is None:
+            if (name := request.data.get('name', None)) is None:
                 return Response('nombre no encontrado.', status = status.HTTP_400_BAD_REQUEST)
-            if (csv_file := request.FILES.get("file")) is None:
+            if (csv_file := request.FILES.get("file", None)) is None:
                 return Response('csv no encontrado.', status = status.HTTP_400_BAD_REQUEST)
 
             if not csv_file.name.endswith('.csv'):
