@@ -127,3 +127,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+app/api/migrations/__init__.py
+app/api/migrations/0001_initial.py
