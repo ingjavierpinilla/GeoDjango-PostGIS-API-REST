@@ -6,16 +6,16 @@ from django.contrib.gis.geos import Point
 from rest_framework.settings import api_settings
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from datetime import datetime, timezone
 
 from .serializer import DatasetSerializer, RowSerializer
 from .models import Dataset, Row
-from .utils import get_logger_handle, get_client_ip
+from .utils import get_logger_handle, get_client_ip, mongologger
 
-collection_handle = get_logger_handle('loggs')
+
 
 class RowListView(APIView):
     permission_classes = (IsAuthenticated,)
-
 
     def get(self, request, format=None):
         dataset_id = request.GET.get('dataset_id', None)
@@ -40,22 +40,24 @@ class RowListView(APIView):
                 
         queryset = Row.objects.filter(**arguments)
         serializer = RowSerializer(queryset, many=True)
+        mongologger(request)
         return Response(serializer.data)
  
 
 
 class Upload_csv(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
-
-    queryset = Dataset.objects.all()
+    permission_classes = (IsAuthenticated,) 
     serializer_class = DatasetSerializer
     pagination_class = PageNumberPagination
-
+    
 
     def get_serializer_class(self):
         return DatasetSerializer
 
-
+    def get_queryset(self):
+        mongologger(self.request)
+        return Dataset.objects.all()
+        
     def create(self, request, *args, **kwargs):
         try:
 
@@ -90,6 +92,7 @@ class Upload_csv(generics.ListCreateAPIView):
                 except:
                     Dataset.objects.filter(id = pk).delete()
                     return Response(f'CSV corrupto en la linea {i}', status = status.HTTP_400_BAD_REQUEST)
+            mongologger(request)
             return Response(f'Carga exitosa', status = status.HTTP_200_OK)
         except Exception as e:
             return Response(f'Imposible cargar archivo {repr(e)}', status = status.HTTP_400_BAD_REQUEST)
