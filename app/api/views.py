@@ -8,6 +8,9 @@ from rest_framework.pagination import PageNumberPagination
 
 from .serializer import DatasetSerializer, RowSerializer
 from .models import Dataset, Row
+from .utils import get_logger_handle, get_client_ip
+
+collection_handle = get_logger_handle('loggs')
 
 class RowListView(APIView):
     def get(self, request, format=None):
