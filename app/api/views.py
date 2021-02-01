@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from django.contrib.gis.geos import Point
 from rest_framework.settings import api_settings
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 
 from .serializer import DatasetSerializer, RowSerializer
 from .models import Dataset, Row
@@ -13,6 +14,9 @@ from .utils import get_logger_handle, get_client_ip
 collection_handle = get_logger_handle('loggs')
 
 class RowListView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+
     def get(self, request, format=None):
         dataset_id = request.GET.get('dataset_id', None)
         name = request.GET.get('name', None)
@@ -41,6 +45,7 @@ class RowListView(APIView):
 
 
 class Upload_csv(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated,)
 
     queryset = Dataset.objects.all()
     serializer_class = DatasetSerializer
