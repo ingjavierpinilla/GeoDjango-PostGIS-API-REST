@@ -10,9 +10,9 @@ from datetime import datetime, timezone
 
 from .serializer import DatasetSerializer, RowSerializer
 from .models import Dataset, Row
-from .utils import get_logger_handle, get_client_ip, mongologger
+from .utils import Mongologger
 
-
+logger = Mongologger()
 
 class RowListView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -40,7 +40,7 @@ class RowListView(APIView):
                 
         queryset = Row.objects.filter(**arguments)
         serializer = RowSerializer(queryset, many=True)
-        mongologger(request)
+        logger(request)
         return Response(serializer.data)
  
 
@@ -55,9 +55,9 @@ class Upload_csv(generics.ListCreateAPIView):
         return DatasetSerializer
 
     def get_queryset(self):
-        mongologger(self.request)
+        logger(self.request)
         return Dataset.objects.all()
-        
+
     def create(self, request, *args, **kwargs):
         try:
 
@@ -92,7 +92,7 @@ class Upload_csv(generics.ListCreateAPIView):
                 except:
                     Dataset.objects.filter(id = pk).delete()
                     return Response(f'CSV corrupto en la linea {i}', status = status.HTTP_400_BAD_REQUEST)
-            mongologger(request)
+            logger(request)
             return Response(f'Carga exitosa', status = status.HTTP_200_OK)
         except Exception as e:
             return Response(f'Imposible cargar archivo {repr(e)}', status = status.HTTP_400_BAD_REQUEST)
