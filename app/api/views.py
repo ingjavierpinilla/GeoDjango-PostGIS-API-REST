@@ -10,8 +10,6 @@ from .serializer import DatasetSerializer, RowSerializer
 from .models import Dataset, Row
 
 class RowListView(APIView):
-
-
     def get(self, request, format=None):
         dataset_id = request.GET.get('dataset_id', None)
         name = request.GET.get('name', None)
