@@ -37,7 +37,7 @@ class LogListView(generics.ListAPIView):
     """
     permission_classes = (IsAuthenticated,)
     serializer_class = LogSerializer
-
+    pagination_class = None
     def get_queryset(self):
         return logger.get_querryset()
 
@@ -53,7 +53,11 @@ class RowListView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
-        dataset_id = request.GET.get('dataset_id', None)
+        try:
+            dataset_id = int(request.GET.get('dataset_id', None))
+        except:
+            return Response('dataset_id debe existir y ser un entero.', status = status.HTTP_400_BAD_REQUEST)
+
         name = request.GET.get('name', None)
         point = request.GET.get('point', None)
         # se espera el punto de la forma (xxxx,xxxx)
@@ -66,9 +70,6 @@ class RowListView(APIView):
                     return Response('Punto no valido.', status = status.HTTP_400_BAD_REQUEST)
             except:
                 return Response('Punto no valido.', status = status.HTTP_400_BAD_REQUEST)
-        # se verifica que el dataset_id no venga vacio, lo que generaria un error a la hora de inseratar en db
-        if dataset_id is None or len(dataset_id) == 0:
-            return Response('Argumento dataset_id no encontrado.', status = status.HTTP_400_BAD_REQUEST)
 
         values = { 'dataset_id' : dataset_id, 'client_name' : name, 'point' : point}
         arguments = {}

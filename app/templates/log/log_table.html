@@ -35,7 +35,7 @@
     headers: {
       Authorization:
         "Bearer " +
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjEyNDQ2MDc4LCJqdGkiOiI1Yzc0NmQwNTI5NjI0M2U2YTcwNDlmM2Y4NTkyNDAxYyIsInVzZXJfaWQiOjJ9.fjIZs9ozcBSV4JHos4GxhKgOqx3CsZWxDj0lyUWpSa8",
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjEyNDUxNDE3LCJqdGkiOiJmMDI3OWE4OWViNTM0ODE1OWZhNTFmOWQzZDJjZTI5NCIsInVzZXJfaWQiOjJ9.skrJhrqXO31hdMivxi93JNYUhSnZeiqHjF9UQOCbDPU",
     },
   };
 
@@ -51,7 +51,7 @@
       });
   }
   getDataPromise().then((res) => {
-    $table.bootstrapTable({ data: res.results });
+    $table.bootstrapTable({ data: res });
   });
 </script>
 {%endblock logs%}
