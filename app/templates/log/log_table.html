@@ -1,4 +1,4 @@
-{%extends "base.html"%} {%block loggs%}
+{%extends "base.html"%} {%block logs%}
 
 <h3 id="auth" class="mt-5 text-center"></h3>
 <table id="table">
@@ -30,7 +30,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
   var $table = $("#table");
-  const url = "/api/v1/loggs";
+  const url = "/api/v1/logs";
   var header = {
     headers: {
       Authorization:
@@ -54,4 +54,4 @@
     $table.bootstrapTable({ data: res.results });
   });
 </script>
-{%endblock loggs%}
+{%endblock logs%}

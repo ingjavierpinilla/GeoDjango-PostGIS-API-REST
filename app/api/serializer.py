@@ -14,7 +14,7 @@ class RowSerializer(serializers.ModelSerializer):
         ordering = ['-id']
         fields = ('id','dataset_id','point','client_id', 'client_name')
 
-class LoggSerializer(serializers.Serializer):
+class LogSerializer(serializers.Serializer):
     ip = serializers.CharField(max_length=15)
     date = serializers.CharField(max_length=19)
     user = serializers.CharField(max_length=30)
