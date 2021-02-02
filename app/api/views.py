@@ -19,7 +19,7 @@ def LoggList(request):
     return render(request, "logg/logg_table.html")
 
 class LoggListView(generics.ListAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = LoggSerializer
 
     def get_queryset(self):
@@ -34,13 +34,16 @@ class RowListView(APIView):
         point = request.GET.get('point', None)
 
         if point is not None:
-            point = point[1:-1].split(" ")
-            if len(point) == 2:
-                point = Point(float(point[0]), float(point[1]))
-            else:
+            try:
+                point = point[1:-1].split(",")
+                if len(point) == 2:
+                    point = Point(float(point[0]), float(point[1]))
+                else:
+                    return Response('Punto no valido.', status = status.HTTP_400_BAD_REQUEST)
+            except:
                 return Response('Punto no valido.', status = status.HTTP_400_BAD_REQUEST)
 
-        if dataset_id is None:
+        if dataset_id is None or len(dataset_id) == 0:
             return Response('Argumento dataset_id no encontrado.', status = status.HTTP_400_BAD_REQUEST)
 
         values = { 'dataset_id' : dataset_id, 'client_name' : name, 'point' : point}
@@ -72,7 +75,7 @@ class Upload_csv(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         try:
 
-            if (name := request.data.get('name', None)) is None:
+            if len((name := request.data.get('name', ''))) == 0:
                 return Response('nombre no encontrado.', status = status.HTTP_400_BAD_REQUEST)
             if (csv_file := request.FILES.get("file", None)) is None:
                 return Response('csv no encontrado.', status = status.HTTP_400_BAD_REQUEST)
