@@ -17,7 +17,12 @@ class Mongologger:
     def logg(self, request):
         collection_handle = self.db_handle['loggs']
         try:
-            collection_handle.insert({'IP': self.get_client_ip(request), 'Date': datetime.now(timezone.utc), 'User': str(request.user)})
+            doc_body ={
+                'ip': str(self.get_client_ip(request)),
+                'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                'user': str(request.user)
+            }
+            r = collection_handle.insert_one(doc_body)
         except:
             pass
 
@@ -36,6 +41,6 @@ class Mongologger:
     def get_querryset(self):
         collection_handle = self.db_handle['loggs']
         cursor = collection_handle.find()
-        json_data = dumps(list(cursor), indent = 2) 
-        print(json_data)
-        return json_data
+        json_dump = dumps(cursor)
+        json_object = loads(json_dump)
+        return json_object

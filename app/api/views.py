@@ -5,22 +5,25 @@ from rest_framework.views import APIView
 from django.contrib.gis.geos import Point
 from rest_framework.settings import api_settings
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from datetime import datetime, timezone
 
-from .serializer import DatasetSerializer, RowSerializer
+from .serializer import DatasetSerializer, RowSerializer, LoggSerializer
 from .models import Dataset, Row
 from .utils import Mongologger
 
 logger = Mongologger()
-#generics.ListAPIView
-class LoggListView(APIView):
-    permission_classes = (IsAuthenticated,)
 
-    def get(self, request, format=None):
-        logger.logg(self.request)
-        return Response(logger.get_querryset())
+def LoggList(request):
+    permission_classes = (AllowAny,)
+    return render(request, "logg/logg_table.html")
 
+class LoggListView(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = LoggSerializer
+
+    def get_queryset(self):
+        return logger.get_querryset()
 
 class RowListView(APIView):
     permission_classes = (IsAuthenticated,)
