@@ -1,7 +1,5 @@
 # Magentrack Test
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
-
 Creacion de API REST para almacenar datasets de elementos geograficos usando Django y PostgreSQL
 
 # Caracteristicas
