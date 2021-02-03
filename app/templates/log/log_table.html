@@ -1,7 +1,38 @@
 {%extends "base.html"%} {%block logs%}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <form onsubmit="return false">
+        <div class="form-group">
+          <label for="InputUser">User</label>
+          <input
+            type="text"
+            class="form-control"
+            id="InputUser"
+            aria-describedby="UserHelp"
+            placeholder="Enter User"
+          />
+        </div>
+        <div class="form-group">
+          <label for="InputPassword">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="InputPassword"
+            placeholder="Password"
+          />
+        </div>
+        <button class="btn btn-primary" id="demo" onclick="pull_log()">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 
 <h3 id="auth" class="mt-5 text-center"></h3>
-<table id="table">
+
+<table id="table" style="visibility: hidden">
   <thead>
     <tr class="text-center">
       <th data-field="ip">Direccion IP</th>
@@ -29,17 +60,42 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-  var $table = $("#table");
-  const url = "/api/v1/logs";
-  var header = {
-    headers: {
-      Authorization:
-        "Bearer " +
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjEyNDUxNDE3LCJqdGkiOiJmMDI3OWE4OWViNTM0ODE1OWZhNTFmOWQzZDJjZTI5NCIsInVzZXJfaWQiOjJ9.skrJhrqXO31hdMivxi93JNYUhSnZeiqHjF9UQOCbDPU",
-    },
-  };
-
-  function getDataPromise() {
+  function pull_log() {
+    getToken().then((res) => {
+      var token = res.data.access;
+      getDataPromise(token).then((res) => {
+        console.log(res);
+        var $table = $("#table");
+        $table.bootstrapTable({ data: res });
+        document.getElementById("auth").innerHTML = "";
+        document.getElementById("table").style.visibility = "visible";
+      });
+    });
+  }
+  function getToken() {
+    return axios({
+      method: "post",
+      url: "http://127.0.0.1:8000/api/token",
+      headers: {},
+      data: {
+        username: document.getElementById("InputUser").value,
+        password: document.getElementById("InputPassword").value, // This is the body part
+      },
+    }).catch((err) => {
+      if (err.response.status === 401) {
+        document.getElementById("auth").innerHTML = "Usuario no authorizado";
+        document.getElementById("table").style.visibility = "hidden";
+      }
+      return {};
+    });
+  }
+  function getDataPromise(token) {
+    var header = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    var url = "/api/v1/logs";
     return axios
       .get(url, header)
       .then((res) => res.data)
@@ -50,8 +106,5 @@
         return {};
       });
   }
-  getDataPromise().then((res) => {
-    $table.bootstrapTable({ data: res });
-  });
 </script>
 {%endblock logs%}
