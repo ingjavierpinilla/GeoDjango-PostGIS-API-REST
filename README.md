@@ -13,7 +13,7 @@ un método POST para ser almacenado en una base de datos PostgreSQL.
     - dataset_id
     - name
     - point
-- El query param dataset_id debe ser obligatorio. Y de no ser enviado notifica al usuario en un mensaje personalizado.
+- El query param dataset_id es obligatorio. Y de no ser enviado notifica al usuario en un mensaje personalizado.
 - Cuenta con un sistema de logger en MongoDB, este debe guardar cada consumo del API en donde se registren los siguientes datos:
     - IP
     - Fecha y hora en utc
@@ -24,6 +24,7 @@ un método POST para ser almacenado en una base de datos PostgreSQL.
 datos al objeto de Bootstrap table.
 - Tiene un control de errores personalizados es decir, si para los métodos POST no se envían correctamente los valores el API debe responder e informar la razón del error.
 - Todos los endpoint del API cuentan con autenticación con JWT.
+- Test unitarios para las vistas y modelos.
 
 ### Tegnologías
 
@@ -88,7 +89,6 @@ El proyecto estara corriendo en la direccion IP
 
 ### Todos
 
- - Agregar test unitarios.
  - Permitir al administrador cambiar la paginación.
 
 Licencia
