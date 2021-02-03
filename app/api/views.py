@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from .serializer import DatasetSerializer, RowSerializer, LogSerializer
 from .models import Dataset, Row
 from .utils import Mongologger
+import re
 
 logger = Mongologger()
 
@@ -63,7 +64,7 @@ class RowListView(APIView):
         # se espera el punto de la forma (xxxx,xxxx)
         if point is not None:
             try:
-                point = point[1:-1].split(",")
+                point = point.replace('(', ' ').replace(')', '').replace(' ', '').split(",")
                 if len(point) == 2:
                     point = Point(float(point[0]), float(point[1]))
                 else:
