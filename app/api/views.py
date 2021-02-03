@@ -54,6 +54,7 @@ class RowListView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
+
         try:
             dataset_id = int(request.GET.get('dataset_id', None))
         except:
@@ -61,7 +62,7 @@ class RowListView(APIView):
 
         name = request.GET.get('name', None)
         point = request.GET.get('point', None)
-        # se espera el punto de la forma (xxxx,xxxx)
+
         if point is not None:
             try:
                 point = point.replace('(', ' ').replace(')', '').replace(' ', '').split(",")
@@ -74,6 +75,7 @@ class RowListView(APIView):
 
         values = { 'dataset_id' : dataset_id, 'client_name' : name, 'point' : point}
         arguments = {}
+
         for k, v in values.items():
             if v:
                 arguments[k] = v
@@ -81,6 +83,7 @@ class RowListView(APIView):
         queryset = Row.objects.filter(**arguments)
         serializer = RowSerializer(queryset, many=True)
         logger.log(request)
+
         return Response(serializer.data)
  
 
@@ -107,7 +110,7 @@ class DatasetListCreate(generics.ListCreateAPIView):
         """
         #log del consumo del metodo GET de la clase
         logger.log(self.request)
-        return Dataset.objects.all()
+        return Dataset.objects.all().order_by('-id')
 
     def create(self, request, *args, **kwargs):
         """Se agrega un nuevo dataset a la base de datos, por cada peticion de tipo POST se verifica
