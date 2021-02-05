@@ -1,4 +1,4 @@
-# Magentrack Test
+# GeoDjango PostGIS API REST
 
 Creacion de API REST para almacenar datasets de elementos geograficos usando Django y PostgreSQL
 
