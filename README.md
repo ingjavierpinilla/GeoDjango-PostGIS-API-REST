@@ -6,6 +6,12 @@ Creacion de API REST para almacenar datasets de elementos geograficos usando Dja
 
   - Permite a los usuarios cargar un archivo en formato CSV por medio de
 un método POST para ser almacenado en una base de datos PostgreSQL.
+    - Los datos en el archivo CSV tienen el siguiente formato:
+    
+           latitude,longitude,client_id,client_name
+           14.4234,-23.1236,21,walruss
+           15.2351,-25.2426,23,hirsch
+           16.6386,-75.4447,24,schmeterling
   - Convierte las propiedades latitude y longitude a un punto en postgis.
   - Endpoint para obtener un registro de todos los datasets con una paginación de 5 registros.
   - Endpoint para obtener listado de filas guardados en la base de datos correspondientes a un determinado dataset.
