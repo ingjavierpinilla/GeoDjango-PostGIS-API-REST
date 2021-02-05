@@ -43,7 +43,7 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
 
         #verificacion de tipo de respuesta, lista (no hice uso de serializer)
-        self.assertIsInstance(response.data, list) 
+        self.assertIsInstance(response.data, (list, dict)) 
         
         #verificacion de tipo de status_code 401 cuando se quitan las credenciales
         self.client.credentials()
@@ -90,4 +90,4 @@ class TestViews(TestCase):
         response = self.client.get(self.row_list_url, {'dataset_id': '1', 'punto': '1,11', 'name': 'ram'})
         self.assertEquals(response.status_code, 200, 'dataset_id, punto y name validos')
         #verificacion de tipo de respuesta, JSON
-        self.assertIsInstance(response.data, dict) 
+        self.assertIsInstance(response.data, (list, dict)) 
