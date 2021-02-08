@@ -14,13 +14,14 @@ un método POST para ser almacenado en una base de datos PostgreSQL.
            15.2351,-25.2426,23,hirsch
            16.6386,-75.4447,24,schmeterling
   - Convierte las propiedades latitude y longitude a un punto en postgis.
-  - Endpoint para obtener un registro de todos los datasets con una paginación de 5 registros.
-  - Endpoint para obtener listado de filas guardados en la base de datos correspondientes a un determinado dataset.
+  - Posee:
+    - Endpoint para obtener un registro de todos los datasets con una paginación de 5 registros.
+    - Endpoint para obtener listado de filas guardados en la base de datos correspondientes a un determinado dataset.
   - Permite filtrar los registros por medio de query params, los campos que por los que se puede filtrar son:
     - dataset_id
     - name
     - point
-- El query param dataset_id es obligatorio. Y de no ser enviado notifica al usuario en un mensaje personalizado.
+- El parametro dataset_id del query es obligatorio. Y de no ser enviado notifica al usuario en un mensaje personalizado.
 - Cuenta con un sistema de logger en MongoDB, este debe guardar cada consumo del API en donde se registren los siguientes datos:
     - IP
     - Fecha y hora en utc
