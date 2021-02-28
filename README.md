@@ -1,55 +1,54 @@
 # GeoDjango PostGIS API REST
 
-Creacion de API REST para almacenar datasets de elementos geograficos usando Django y PostgreSQL
+Creation of REST API to store datasets of geographic elements using Django and PostgreSQL
 
-# Caracteristicas
+# Features
 ![ds_structure](https://github.com/ingjavierpinilla/GeoDjango-PostGIS-API-REST/blob/main/ds_structure.png?raw=true)
 
-  - Permite a los usuarios cargar un archivo en formato CSV por medio de
-un método POST para ser almacenado en una base de datos PostgreSQL.
-    - Los datos en el archivo CSV tienen el siguiente formato:
+  - Allows users to upload a file in CSV format via a POST method to be stored in a PostgreSQL database.
+a POST method to be stored in a PostgreSQL database.
+    - The data in the CSV file has the following format:
     
            latitude,longitude,client_id,client_name
            14.4234,-23.1236,21,walruss
            15.2351,-25.2426,23,hirsch
            16.6386,-75.4447,24,schmeterling
-  - Convierte las propiedades latitude y longitude a un punto en postgis.
-  - Posee:
-    - Endpoint para obtener un registro de todos los datasets con una paginación de 5 registros.
-    - Endpoint para obtener listado de filas guardados en la base de datos correspondientes a un determinado dataset.
-  - Permite filtrar los registros por medio de query params, los campos que por los que se puede filtrar son:
+  - Convert latitude and longitude properties to a point in postgis.
+  - It has:
+    - Endpoint to obtain a record of all datasets with a pagination of 5 records.
+    - Endpoint to obtain a list of rows stored in the database corresponding to a given dataset..
+  - It allows to filter the records by means of query params, the fields that can be filtered by are:
     - dataset_id
     - name
     - point
-- El parametro dataset_id del query es obligatorio. Y de no ser enviado notifica al usuario en un mensaje personalizado.
-- Cuenta con un sistema de logger en MongoDB, este debe guardar cada consumo del API en donde se registren los siguientes datos:
-    - IP
-    - Fecha y hora en utc
-    - usuario que genero el consumo del API
-- Posee una vista basica hecha con el framework https://getbootstrap.com/ y utiliza el plugin https://bootstrap-table.com/ para mostrar el sistema de Logger almacenado en MongoDB.
-- Se creó un Classview de Django y retornar la consulta de MongoDB de los datos del Logger en formato json para mostrarlo en una tabla de Bootstrap Table.
-- Para el consumo del objeto Json se usa la librería axios y cargar los
-datos al objeto de Bootstrap table.
-- Tiene un control de errores personalizados es decir, si para los métodos POST no se envían correctamente los valores el API debe responder e informar la razón del error.
-- Todos los endpoint del API cuentan con autenticación con JWT.
-- Test unitarios para las vistas y modelos.
+- The dataset_id parameter of the query is mandatory. And if it is not sent it notifies the user in a custom message.
+- It has a logger system in MongoDB, which must store each API consumption where the following data is recorded:
+    - IP address.
+    - Date and UTC - time.
+    - user who used the API.
+- It has a basic view made with the framework https://getbootstrap.com/ and uses the plugin https://bootstrap-table.com/ to display the Logger system stored in MongoDB.
+- A Django Classview was created and return the MongoDB query of the Logger data in json format to display it in a Bootstrap Table..
+- For the consumption of the Json object, the axios library is used to load the data to the Bootstrap table object.
+- It has a custom error control, i.e. if for POST methods the values are not sent correctly, the API must respond and report the reason for the error..
+- All API endpoints are JWT-authenticated.
+- Unit tests for views and models.
 
-### Tegnologías
+### Technologies
 
-El API REST fue creado empleado los siguientes recursos
+The REST API was created using the following resources
 
 * [Docker] 
-* [Python] - Imagen 3.8.7-slim
-* [PostGIS] - Imagen PostGIS de kartoza version 12.1
+* [Python] - Image 3.8.7-slim
+* [PostGIS] - Image PostGIS from kartoza version 12.1
 * [MongoDB]
 * [Bootstrap] 
 * [Bootstrap-table]
 
 
 ### Docker
-Se creo un archivo docker-compose que se encarga de lanzar contenedores de Python exponiendo el puerto 8000, PostGIS con el puerto 5432 y MongoDB en el 27017.
+A docker-compose file was created that is responsible for launching Python containers exposing port 8000, PostGIS with port 5432 and MongoDB on 27017.
 
-Por favor tenga en cuenta que antes de realizar cualquier procedimiento debe crear las correspondientes variables de entorno, los archivos Dockerfile y ./app/app/settings.py requieren de las siguientes variables de entorno:
+Please note that before performing any procedure you must create the corresponding environment variables, the Dockerfile and ./app/app/settings.py files require the following environment variables:
 - Dockerfile
     - POSTGRES_USER
     - POSTGRES_PASSWORD
@@ -66,38 +65,38 @@ Por favor tenga en cuenta que antes de realizar cualquier procedimiento debe cre
     - MONGO_PORT
     - MONGO_PASSWORD
 
-Para construir el proyecto ejecute:
+To build the project execute:
 ```sh
 cd magentrack-test
 docker-compose build 
 ```
-Esto compilara el proyecto local y hara pull a las imagenes necesarias.
+This will compile the local project and pull the necessary images.
 
-Los nombres correspondientes para los contenedores son:
+The corresponding names for the containers are:
 - Python -> app
 - PostGIS -> postgis
 - MongoDB -> mongodb
 
-Una vez realizado proceda a realizar las migraciones y migrar la base de datos (el repositorio no cuenta con ella). Ya que el proyecto de django depende de las bases de datos se usa un script que espera hasta que estas se encuentren disponibles. Ejecute: 
+Once done, proceed to perform the migrations and migrate the database (the repository does not have it). Since the django project depends on databases, a script is used to wait until they are available. Execute: 
 ```sh
 docker-compose run app sh -c "../wait && python manage.py makemigrations"
 docker-compose run app sh -c "../wait && python manage.py migrate"
 ```
-Finalmente puede lanzar el proyecto usando: 
+Finally you can launch the project using: 
 
 ```sh
 docker-compose up
 ```
-El proyecto estara corriendo en la direccion IP 
+The project will be running on the following IP address 
 ```sh
 127.0.0.1:8000
 ```
 
 
 
-### Todos
+### To Do
 
- - Permitir al administrador cambiar la paginación.
+ - Allow the administrator to change the pagination.
 
 Licencia
 ----
